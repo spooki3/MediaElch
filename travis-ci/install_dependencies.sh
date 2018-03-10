@@ -21,7 +21,7 @@ set -e
 if [ -z ${QT+x} ]; then print_error "\$QT is unset"; return 1; fi
 
 # Load utils (color output, folding, etc.)
-. "${TRAVIS_BUILD_DIR}/travisCI/utils.sh"
+. "${TRAVIS_BUILD_DIR}/travis-ci/utils.sh"
 cd "${TRAVIS_BUILD_DIR}"
 
 print_important "Getting dependencies for building for ${QT} on ${TRAVIS_OS_NAME}"

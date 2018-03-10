@@ -21,7 +21,7 @@ branches:
   - travis-archer96
 
 before_install:
-- "${TRAVIS_BUILD_DIR}/travisCI/install_dependencies.sh"
+- "${TRAVIS_BUILD_DIR}/travis-ci/install_dependencies.sh"
 install:
 - ${CXX} -v
 
