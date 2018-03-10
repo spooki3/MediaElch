@@ -18,8 +18,7 @@ matrix:
 
 branches:
   only:
-  - master
-  - release
+  - travis-archer96
 
 before_install:
 - "${TRAVIS_BUILD_DIR}/travisCI/install_dependencies.sh"
