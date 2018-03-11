@@ -22,7 +22,7 @@ void MovieMaze::searchMovie(QString searchStr)
     QUrl url("http://www.moviemaze.de/media/trailer/archiv.phtml");
     QNetworkRequest request(url);
     m_searchReply = m_qnam->get(request);
-    connect(m_searchReply, SIGNAL(finished()), this, SLOT(onSearchFinished()));
+    connect(m_searchReply, &QNetworkReply::finished, this, &MovieMaze::onSearchFinished);
 }
 
 void MovieMaze::onSearchFinished()
@@ -58,7 +58,7 @@ void MovieMaze::loadMovieTrailers(QString id)
     if (m_loadReply)
         m_loadReply->abort();
     m_loadReply = m_qnam->get(QNetworkRequest(QUrl("http://www.moviemaze.de/media/trailer/" + id)));
-    connect(m_loadReply, SIGNAL(finished()), this, SLOT(onLoadFinished()));
+    connect(m_loadReply.data(), &QNetworkReply::finished, this, &MovieMaze::onLoadFinished);
 }
 
 void MovieMaze::onLoadFinished()
@@ -71,7 +71,7 @@ void MovieMaze::onLoadFinished()
             url.prepend("http://www.moviemaze.de");
         m_loadReply->deleteLater();
         m_loadReply = m_qnam->get(QNetworkRequest(url));
-        connect(m_loadReply, SIGNAL(finished()), this, SLOT(onLoadFinished()));
+        connect(m_loadReply.data(), &QNetworkReply::finished, this, &MovieMaze::onLoadFinished);
         return;
     }
 
@@ -92,7 +92,7 @@ void MovieMaze::onLoadFinished()
 
     if (m_trailerSites.count() > 0) {
         m_loadReply = m_qnam->get(QNetworkRequest(m_trailerSites.at(0)));
-        connect(m_loadReply, SIGNAL(finished()), this, SLOT(onSubLoadFinished()));
+        connect(m_loadReply.data(), &QNetworkReply::finished, this, &MovieMaze::onSubLoadFinished);
     } else {
         loadPreviewImages();
     }
@@ -109,7 +109,7 @@ void MovieMaze::onSubLoadFinished()
 
     if (m_trailerSites.count() > 0) {
         m_loadReply = m_qnam->get(QNetworkRequest(m_trailerSites.at(0)));
-        connect(m_loadReply, SIGNAL(finished()), this, SLOT(onSubLoadFinished()));
+        connect(m_loadReply.data(), &QNetworkReply::finished, this, &MovieMaze::onSubLoadFinished);
     } else {
         loadPreviewImages();
     }
@@ -155,7 +155,7 @@ void MovieMaze::loadPreviewImages()
         if (!m_currentTrailers[i].previewImageLoaded) {
             m_currentPreviewLoad = i;
             m_previewLoadReply = m_qnam->get(QNetworkRequest(m_currentTrailers[i].preview));
-            connect(m_previewLoadReply, SIGNAL(finished()), this, SLOT(onLoadPreviewImageFinished()));
+            connect(m_previewLoadReply, &QNetworkReply::finished, this, &MovieMaze::onLoadPreviewImageFinished);
             return;
         }
     }

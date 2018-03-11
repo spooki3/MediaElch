@@ -24,16 +24,16 @@ XbmcSync::XbmcSync(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(&m_qnam,
-        SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
-        this,
-        SLOT(onAuthRequired(QNetworkReply *, QAuthenticator *)));
+    connect(&m_qnam, &QNetworkAccessManager::authenticationRequired, this, &XbmcSync::onAuthRequired);
 
-    connect(ui->buttonSync, SIGNAL(clicked()), this, SLOT(startSync()));
-    connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(onButtonClose()));
-    connect(ui->radioUpdateContents, SIGNAL(clicked()), this, SLOT(onRadioContents()));
-    connect(ui->radioClean, SIGNAL(clicked()), this, SLOT(onRadioClean()));
-    connect(ui->radioGetWatched, SIGNAL(clicked()), this, SLOT(onRadioWatched()));
+    // clang-format off
+    connect(ui->buttonSync,          &QAbstractButton::clicked, this, &XbmcSync::startSync);
+    connect(ui->buttonClose,         &QAbstractButton::clicked, this, &XbmcSync::onButtonClose);
+    connect(ui->radioUpdateContents, &QAbstractButton::clicked, this, &XbmcSync::onRadioContents);
+    connect(ui->radioClean,          &QAbstractButton::clicked, this, &XbmcSync::onRadioClean);
+    connect(ui->radioGetWatched,     &QAbstractButton::clicked, this, &XbmcSync::onRadioWatched);
+    // clang-format on
+
     ui->progressBar->setVisible(false);
     onRadioContents();
 }
@@ -178,7 +178,7 @@ void XbmcSync::startSync()
 #else
         QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-        connect(reply, SIGNAL(finished()), this, SLOT(onMovieListFinished()));
+        connect(reply, &QNetworkReply::finished, this, &XbmcSync::onMovieListFinished);
     }
 
     if (!m_concertsToSync.isEmpty()) {
@@ -193,7 +193,7 @@ void XbmcSync::startSync()
 #else
         QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-        connect(reply, SIGNAL(finished()), this, SLOT(onConcertListFinished()));
+        connect(reply, &QNetworkReply::finished, this, &XbmcSync::onConcertListFinished);
     }
 
     if (!m_tvShowsToSync.isEmpty()) {
@@ -208,7 +208,7 @@ void XbmcSync::startSync()
 #else
         QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-        connect(reply, SIGNAL(finished()), this, SLOT(onTvShowListFinished()));
+        connect(reply, &QNetworkReply::finished, this, &XbmcSync::onTvShowListFinished);
     }
 
     if (!m_episodesToSync.isEmpty()) {
@@ -223,12 +223,12 @@ void XbmcSync::startSync()
 #else
         QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-        connect(reply, SIGNAL(finished()), this, SLOT(onEpisodeListFinished()));
+        connect(reply, &QNetworkReply::finished, this, &XbmcSync::onEpisodeListFinished);
     }
 
     if (m_moviesToSync.isEmpty() && m_concertsToSync.isEmpty() && m_tvShowsToSync.isEmpty()
         && m_episodesToSync.isEmpty()) {
-        QTimer::singleShot(m_reloadTimeOut, this, SLOT(triggerReload()));
+        QTimer::singleShot(m_reloadTimeOut, this, &XbmcSync::triggerReload);
     } else {
         ui->status->setText(tr("Getting contents from Kodi"));
         ui->buttonSync->setEnabled(false);
@@ -431,7 +431,7 @@ void XbmcSync::removeItems()
 #else
         QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-        connect(reply, SIGNAL(finished()), this, SLOT(onRemoveFinished()));
+        connect(reply, &QNetworkReply::finished, this, &XbmcSync::onRemoveFinished);
         return;
     }
 
@@ -450,7 +450,7 @@ void XbmcSync::removeItems()
 #else
         QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-        connect(reply, SIGNAL(finished()), this, SLOT(onRemoveFinished()));
+        connect(reply, &QNetworkReply::finished, this, &XbmcSync::onRemoveFinished);
         return;
     }
 
@@ -469,7 +469,7 @@ void XbmcSync::removeItems()
 #else
         QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-        connect(reply, SIGNAL(finished()), this, SLOT(onRemoveFinished()));
+        connect(reply, &QNetworkReply::finished, this, &XbmcSync::onRemoveFinished);
         return;
     }
 
@@ -489,11 +489,11 @@ void XbmcSync::removeItems()
 #else
         QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-        connect(reply, SIGNAL(finished()), this, SLOT(onRemoveFinished()));
+        connect(reply, &QNetworkReply::finished, this, &XbmcSync::onRemoveFinished);
         return;
     }
 
-    QTimer::singleShot(m_reloadTimeOut, this, SLOT(triggerReload()));
+    QTimer::singleShot(m_reloadTimeOut, this, &XbmcSync::triggerReload);
 }
 
 void XbmcSync::onRemoveFinished()
@@ -511,7 +511,7 @@ void XbmcSync::onRemoveFinished()
         || !m_episodesToRemove.isEmpty())
         removeItems();
     else
-        QTimer::singleShot(m_reloadTimeOut, this, SLOT(triggerReload()));
+        QTimer::singleShot(m_reloadTimeOut, this, &XbmcSync::triggerReload);
 }
 
 void XbmcSync::triggerReload()
@@ -531,7 +531,7 @@ void XbmcSync::triggerReload()
 #else
     QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-    connect(reply, SIGNAL(finished()), this, SLOT(onScanFinished()));
+    connect(reply, &QNetworkReply::finished, this, &XbmcSync::onScanFinished);
 }
 
 void XbmcSync::onScanFinished()
@@ -555,7 +555,7 @@ void XbmcSync::triggerClean()
 #else
     QNetworkReply *reply = m_qnam.post(request, QJsonDocument(o).toJson());
 #endif
-    connect(reply, SIGNAL(finished()), this, SLOT(onCleanFinished()));
+    connect(reply, &QNetworkReply::finished, this, &XbmcSync::onCleanFinished);
 }
 
 void XbmcSync::onCleanFinished()

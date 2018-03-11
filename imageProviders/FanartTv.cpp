@@ -296,7 +296,7 @@ void FanartTv::loadMovieData(QString tmdbId, int type)
     request.setUrl(url);
     QNetworkReply *reply = qnam()->get(QNetworkRequest(request));
     reply->setProperty("infoToLoad", type);
-    connect(reply, SIGNAL(finished()), this, SLOT(onLoadMovieDataFinished()));
+    connect(reply, &QNetworkReply::finished, this, &FanartTv::onLoadMovieDataFinished);
 }
 
 /**
@@ -315,7 +315,7 @@ void FanartTv::loadMovieData(QString tmdbId, QList<int> types, Movie *movie)
     QNetworkReply *reply = qnam()->get(QNetworkRequest(request));
     reply->setProperty("storage", Storage::toVariant(reply, movie));
     reply->setProperty("infosToLoad", Storage::toVariant(reply, types));
-    connect(reply, SIGNAL(finished()), this, SLOT(onLoadAllMovieDataFinished()));
+    connect(reply, &QNetworkReply::finished, this, &FanartTv::onLoadAllMovieDataFinished);
 }
 
 /**
@@ -332,7 +332,7 @@ void FanartTv::loadConcertData(QString tmdbId, QList<int> types, Concert *concer
     QNetworkReply *reply = qnam()->get(QNetworkRequest(request));
     reply->setProperty("infosToLoad", Storage::toVariant(reply, types));
     reply->setProperty("storage", Storage::toVariant(reply, concert));
-    connect(reply, SIGNAL(finished()), this, SLOT(onLoadAllConcertDataFinished()));
+    connect(reply, &QNetworkReply::finished, this, &FanartTv::onLoadAllConcertDataFinished);
 }
 
 /**
@@ -500,7 +500,7 @@ void FanartTv::loadTvShowData(QString tvdbId, int type, int season)
     QNetworkReply *reply = qnam()->get(QNetworkRequest(request));
     reply->setProperty("infoToLoad", type);
     reply->setProperty("season", season);
-    connect(reply, SIGNAL(finished()), this, SLOT(onLoadTvShowDataFinished()));
+    connect(reply, &QNetworkReply::finished, this, &FanartTv::onLoadTvShowDataFinished);
 }
 
 /**
@@ -518,7 +518,7 @@ void FanartTv::loadTvShowData(QString tvdbId, QList<int> types, TvShow *show)
     QNetworkReply *reply = qnam()->get(QNetworkRequest(request));
     reply->setProperty("infosToLoad", Storage::toVariant(reply, types));
     reply->setProperty("storage", Storage::toVariant(reply, show));
-    connect(reply, SIGNAL(finished()), this, SLOT(onLoadAllTvShowDataFinished()));
+    connect(reply, &QNetworkReply::finished, this, &FanartTv::onLoadAllTvShowDataFinished);
 }
 
 /**
