@@ -904,9 +904,9 @@ DiscType Concert::discType()
 {
     if (files().isEmpty())
         return DiscSingle;
-    if (Helper::instance()->isDvd(files().first()))
+    if (Helper::isDvd(files().first()))
         return DiscDvd;
-    if (Helper::instance()->isBluRay(files().first()))
+    if (Helper::isBluRay(files().first()))
         return DiscBluRay;
     return DiscSingle;
 }
@@ -929,9 +929,7 @@ void Concert::removeImage(int type)
 
 bool Concert::lessThan(Concert *a, Concert *b)
 {
-    return (QString::localeAwareCompare(
-                Helper::instance()->appendArticle(a->name()), Helper::instance()->appendArticle(b->name()))
-            < 0);
+    return (QString::localeAwareCompare(Helper::appendArticle(a->name()), Helper::appendArticle(b->name())) < 0);
 }
 
 QList<int> Concert::imageTypes()

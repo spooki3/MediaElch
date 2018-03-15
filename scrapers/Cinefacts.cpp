@@ -111,7 +111,7 @@ QList<int> Cinefacts::scraperNativelySupports()
 void Cinefacts::search(QString searchStr)
 {
     qDebug() << "Entered, searchStr=" << searchStr;
-    QString encodedSearch = Helper::instance()->toLatin1PercentEncoding(searchStr);
+    QString encodedSearch = Helper::toLatin1PercentEncoding(searchStr);
     QUrl url(QString("http://www.cinefacts.de/search/site/q/%1/").arg(encodedSearch).toUtf8());
     QNetworkReply *reply = qnam()->get(QNetworkRequest(url));
     new NetworkReplyWatcher(this, reply);
@@ -333,18 +333,18 @@ void Cinefacts::parseAndAssignInfos(QString html, Movie *movie, QList<int> infos
     // Country
     rx.setPattern(R"(<span itemprop="genre" >[^>]*</span> \| (.*) \(<time datetime=)");
     if (infos.contains(MovieScraperInfos::Countries) && rx.indexIn(html) != -1)
-        movie->addCountry(Helper::instance()->mapCountry(rx.cap(1).trimmed()));
+        movie->addCountry(Helper::mapCountry(rx.cap(1).trimmed()));
 
     // Studio
     rx.setPattern("<span itemscope itemprop=\"provider\" itemtype=\"http://www.schema.org/Organization\" ><span "
                   "itemprop=\"name\" >([^<]*)</span>");
     if (infos.contains(MovieScraperInfos::Studios) && rx.indexIn(html) != -1)
-        movie->addStudio(Helper::instance()->mapStudio(rx.cap(1).trimmed()));
+        movie->addStudio(Helper::mapStudio(rx.cap(1).trimmed()));
 
     // MPAA
     rx.setPattern("Freigegeben ab ([0-9]*) Jahren");
     if (infos.contains(MovieScraperInfos::Certification) && rx.indexIn(html) != -1)
-        movie->setCertification(Helper::instance()->mapCertification("FSK " + rx.cap(1)));
+        movie->setCertification(Helper::mapCertification("FSK " + rx.cap(1)));
 
     // Runtime
     rx.setPattern(R"(<time itemprop="duration" datetime="PT[^"]*" >([0-9]*)</time>)");

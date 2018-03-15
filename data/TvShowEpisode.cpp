@@ -133,9 +133,9 @@ bool TvShowEpisode::loadData(MediaCenterInterface *mediaCenterInterface, bool re
             QStringList filenameParts = files().at(0).split(QDir::separator());
             QString filename = filenameParts.last();
             if (filename.endsWith("VIDEO_TS.IFO", Qt::CaseInsensitive)) {
-                if (filenameParts.count() > 1 && Helper::instance()->isDvd(files().at(0)))
+                if (filenameParts.count() > 1 && Helper::isDvd(files().at(0)))
                     filename = filenameParts.at(filenameParts.count() - 3);
-                else if (filenameParts.count() > 2 && Helper::instance()->isDvd(files().at(0), true))
+                else if (filenameParts.count() > 2 && Helper::isDvd(files().at(0), true))
                     filename = filenameParts.at(filenameParts.count() - 2);
             } else if (filename.endsWith("index.bdmv", Qt::CaseInsensitive)) {
                 if (filenameParts.count() > 2)
@@ -967,9 +967,7 @@ bool TvShowEpisode::lessThan(TvShowEpisode *a, TvShowEpisode *b)
     if (a->episode() > b->episode())
         return false;
 
-    return (QString::localeAwareCompare(
-                Helper::instance()->appendArticle(a->name()), Helper::instance()->appendArticle(b->name()))
-            < 0);
+    return (QString::localeAwareCompare(Helper::appendArticle(a->name()), Helper::appendArticle(b->name())) < 0);
 }
 
 QString TvShowEpisode::imdbId() const
