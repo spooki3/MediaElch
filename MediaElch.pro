@@ -27,7 +27,7 @@ win32 {
     DEFINES+=_UNICODE
 }
 
-gcc | clang {
+*-g++*|*-clang* {
     # Include all Qt modules using isystem so that warnings reagarding Qt files are ignored
     QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]"
     for (inc, QT) {
@@ -35,17 +35,20 @@ gcc | clang {
     }
 }
 
-gcc {
-    # Enable (all) warnings but ignore them for quazip files.
-    QUAZIP_FILES = qua% qioapi% zip% unzip%
+# Enable (all/most) warnings but ignore them for quazip files.
+*-g++* {
     WARNINGS += -Wall -Wextra
     WARNINGS += -Wunknown-pragmas -Wundef -Wold-style-cast -Wuseless-cast
     WARNINGS += -Wdisabled-optimization -Wstrict-overflow=4
     WARNINGS += -Winit-self -Wpointer-arith
     WARNINGS += -Wlogical-op -Wunsafe-loop-optimizations
     WARNINGS += -Wno-error=unsafe-loop-optimizations
-    QMAKE_CXXFLAGS_WARN_ON += $(and $(filter-out moc_% qrc_% $$QUAZIP_FILES, $@),$${WARNINGS})
 }
+*-clang* {
+    WARNINGS += -Wextra
+}
+QUAZIP_FILES = qua% qioapi% zip% unzip%
+QMAKE_CXXFLAGS_WARN_ON += $(and $(filter-out moc_% qrc_% $$QUAZIP_FILES, $@),$${WARNINGS})
 
 target.path = /usr/bin
 INSTALLS += target

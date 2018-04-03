@@ -41,35 +41,18 @@ if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
 	fold_start "update"
 	sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 	sudo add-apt-repository -y ppa:beineri/opt-${QT_PPA}-trusty
-	if [ "${CXX}" = "clang++" ]; then
-		wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-		sudo apt-add-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main"
-	fi
 	sudo apt-get -qq update
-	fold_end "update"
+	fold_end
 
 	#######################################################
-	# Compilers
+	# Compiler
 
-	print_info "Updating compiler \"${CXX}\"..."
+	print_info "Updating GCC..."
 	fold_start "update_compiler"
-	if [ "${CXX}" = "g++" ]; then
-		sudo apt-get install -y g++-7 gcc-7
-		# Overwrite defaults
-		sudo ln -sf ${BIN_DIR}/g++-7 ${BIN_DIR}/g++
-		sudo ln -sf ${BIN_DIR}/gcc-7 ${BIN_DIR}/gcc
-
-	elif [ "${CXX}" = "clang++" ]; then
-		sudo apt-get install -y clang++-6.0 clang-6.0
-		# Overwrite defaults
-		sudo ln -s ${BIN_DIR}/clang++-6.0 ${BIN_DIR}/clang++
-		sudo ln -s ${BIN_DIR}/clang-6.0 ${BIN_DIR}/clang
-
-	else
-		print_error "Unknown compiler."
-		exit 1;
-	fi
-	fold_end "update_compiler"
+	sudo apt-get install -y g++-7 gcc-7
+	sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 90
+	sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+	fold_end
 
 	#######################################################
 	# Dependencies
@@ -77,15 +60,16 @@ if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
 	print_info "Installing Qt packages"
 	fold_start "qt_install"
 	sudo apt-get install -y ${QT}base ${QT}script ${QT}multimedia ${QT}declarative
-	fold_end "qt_install"
+	fold_end
 
 	print_info "Installing other dependencies"
 	fold_start "other_install"
 	sudo apt-get install -y libcurl4-openssl-dev libmediainfo-dev libpulse-dev zlib1g-dev libzen-dev
-	fold_end "other_install"
+	fold_end
 
 elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
 
+	fold_start "download_libraries"
 	print_info "Dowload MediaInfoLib sources"
 	svn checkout https://github.com/MediaArea/MediaInfoLib/trunk/Source/MediaInfoDLL
 
@@ -100,6 +84,7 @@ elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
 	}
 	print_info "Brewing packages: qt5 media-info"
 	brew install qt5 media-info
+	fold_end
 
 else
 	print_error "Unknown operating system."

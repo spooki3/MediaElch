@@ -1,17 +1,13 @@
 language: generic
 matrix:
   include:
-  - env: QT=qtMac CXX=clang
+  - env: QT=qtMac CXX=clang++ CC=clang
     os: osx
-  - env: QT=qt510 QT_PPA=qt-5.10.1 CXX=g++
+  - env: QT=qt510 QT_PPA=qt-5.10.1 CXX=g++ CC=gcc
     os: linux
     dist: trusty
     sudo: required
-  - env: QT=qt510 QT_PPA=qt-5.10.1 CXX=clang++
-    os: linux
-    dist: trusty
-    sudo: required
-  - env: QT=qt56  QT_PPA=qt563 CXX=g++
+  - env: QT=qt55 QT_PPA=qt551 CXX=g++ CC=gcc
     os: linux
     dist: trusty
     sudo: required
@@ -23,7 +19,8 @@ branches:
 before_install:
 - "${TRAVIS_BUILD_DIR}/travis-ci/install_dependencies.sh"
 install:
-- ${CXX} -v
+- ${CXX} --version
+- ${CC} --version
 
 # Set some environment variables, then run qmake
 before_script:
