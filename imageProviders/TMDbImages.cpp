@@ -423,6 +423,11 @@ void TMDbImages::albumThumbs(QString mbId)
     Q_UNUSED(mbId);
 }
 
+void TMDbImages::albumBackCovers(QString mbId)
+{
+    Q_UNUSED(mbId);
+}
+
 void TMDbImages::artistImages(Artist *artist, QString mbId, QList<int> types)
 {
     Q_UNUSED(artist);

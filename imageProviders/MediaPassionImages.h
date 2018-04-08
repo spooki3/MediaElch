@@ -45,6 +45,7 @@ public:
     void artistThumbs(QString mbId) override;
     void albumCdArts(QString mbId) override;
     void albumThumbs(QString mbId) override;
+    void albumBackCovers(QString mbId) override;
     void artistImages(Artist *artist, QString mbId, QList<int> types) override;
     void albumImages(Album *album, QString mbId, QList<int> types) override;
     void albumBooklets(QString mbId) override;

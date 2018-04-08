@@ -50,6 +50,7 @@ public:
     virtual void artistThumbs(QString mbId) = 0;
     virtual void albumCdArts(QString mbId) = 0;
     virtual void albumThumbs(QString mbId) = 0;
+    virtual void albumBackCovers(QString mbId) = 0;
     virtual void albumBooklets(QString mbId) = 0;
     virtual void artistImages(Artist *artist, QString mbId, QList<int> types) = 0;
     virtual void albumImages(Album *album, QString mbId, QList<int> types) = 0;

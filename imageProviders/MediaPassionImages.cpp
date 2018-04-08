@@ -315,6 +315,11 @@ void MediaPassionImages::albumThumbs(QString mbId)
     Q_UNUSED(mbId);
 }
 
+void MediaPassionImages::albumBackCovers(QString mbId)
+{
+    Q_UNUSED(mbId);
+}
+
 void MediaPassionImages::artistImages(Artist *artist, QString mbId, QList<int> types)
 {
     Q_UNUSED(artist);

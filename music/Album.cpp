@@ -244,43 +244,63 @@ void Album::clear()
           << MusicScraperInfos::Rating      //
           << MusicScraperInfos::Year        //
           << MusicScraperInfos::Cover       //
-          << MusicScraperInfos::CdArt;
+          << MusicScraperInfos::CdArt       //
+          << MusicScraperInfos::BackCover;
     clear(infos);
     m_nfoContent.clear();
 }
 
 void Album::clear(QList<int> infos)
 {
-    if (infos.contains(MusicScraperInfos::Artist))
+    if (infos.contains(MusicScraperInfos::Artist)) {
         m_artist.clear();
-    if (infos.contains(MusicScraperInfos::Title))
+    }
+    if (infos.contains(MusicScraperInfos::Title)) {
         m_title.clear();
-    if (infos.contains(MusicScraperInfos::Genres))
+    }
+    if (infos.contains(MusicScraperInfos::Genres)) {
         m_genres.clear();
-    if (infos.contains(MusicScraperInfos::Styles))
+    }
+    if (infos.contains(MusicScraperInfos::Styles)) {
         m_styles.clear();
-    if (infos.contains(MusicScraperInfos::Moods))
+    }
+    if (infos.contains(MusicScraperInfos::Moods)) {
         m_moods.clear();
-    if (infos.contains(MusicScraperInfos::Review))
+    }
+    if (infos.contains(MusicScraperInfos::Review)) {
         m_review.clear();
-    if (infos.contains(MusicScraperInfos::ReleaseDate))
+    }
+    if (infos.contains(MusicScraperInfos::ReleaseDate)) {
         m_releaseDate.clear();
-    if (infos.contains(MusicScraperInfos::Label))
+    }
+    if (infos.contains(MusicScraperInfos::Label)) {
         m_label.clear();
-    if (infos.contains(MusicScraperInfos::Rating))
+    }
+    if (infos.contains(MusicScraperInfos::Rating)) {
         m_rating = 0;
-    if (infos.contains(MusicScraperInfos::Year))
+    }
+    if (infos.contains(MusicScraperInfos::Year)) {
         m_year = 0;
+    }
 
     if (infos.contains(MusicScraperInfos::Cover)) {
-        if (!m_images.contains(ImageType::AlbumThumb))
+        if (!m_images.contains(ImageType::AlbumThumb)) {
             m_images.insert(ImageType::AlbumThumb, QList<Poster>());
+        }
         m_images[ImageType::AlbumThumb].clear();
         m_rawImages.insert(ImageType::AlbumThumb, QByteArray());
     }
+    if (infos.contains(MusicScraperInfos::BackCover)) {
+        if (!m_images.contains(ImageType::AlbumBackCover)) {
+            m_images.insert(ImageType::AlbumBackCover, QList<Poster>());
+        }
+        m_images[ImageType::AlbumBackCover].clear();
+        m_rawImages.insert(ImageType::AlbumBackCover, QByteArray());
+    }
     if (infos.contains(MusicScraperInfos::CdArt)) {
-        if (!m_images.contains(ImageType::AlbumCdArt))
+        if (!m_images.contains(ImageType::AlbumCdArt)) {
             m_images.insert(ImageType::AlbumCdArt, QList<Poster>());
+        }
         m_images[ImageType::AlbumCdArt].clear();
         m_rawImages.insert(ImageType::AlbumCdArt, QByteArray());
     }

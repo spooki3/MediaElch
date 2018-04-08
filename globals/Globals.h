@@ -263,6 +263,7 @@ namespace ImageType {
     const int AlbumCdArt           = 36;
     const int ArtistExtraFanart    = 37;
     const int AlbumBooklet         = 38;
+    const int AlbumBackCover       = 39;
 }
 
 namespace MovieScraperInfos {
@@ -364,6 +365,7 @@ namespace MusicScraperInfos {
     const int Cover        = 22;
     const int ExtraFanarts = 23;
     const int Discography  = 24;
+    const int BackCover    = 25;
 }
 
 // The filter numbers have to unique for MovieFilters, TvShowFilters and ConcertFilters
@@ -462,6 +464,7 @@ namespace DataFileType {
     const int ArtistLogo           = 35;
     const int AlbumThumb           = 36;
     const int AlbumCdArt           = 37;
+    const int AlbumBackCover       = 38;
 }
 // clang-format on
 

@@ -60,12 +60,12 @@ private:
     QMutex m_artistMutex;
     QMutex m_albumMutex;
 
-    QNetworkAccessManager *qnam();
     QString trim(QString text);
-    bool shouldLoad(int info, QList<int> infos, Artist *artist);
-    bool shouldLoad(int info, QList<int> infos, Album *album);
-    bool infosLeft(QList<int> infos, Artist *artist);
-    bool infosLeft(QList<int> infos, Album *album);
+    bool isArtistDownloaded(Artist &artist) const;
+    bool shouldLoad(int info, QList<int> infos, Artist *artist) const;
+    bool shouldLoad(int info, QList<int> infos, Album *album) const;
+    bool infosLeft(QList<int> infos, Artist *artist) const;
+    bool infosLeft(QList<int> infos, Album *album) const;
     void appendDownloadElement(Artist *artist, QString source, QString type, QUrl url);
     void appendDownloadElement(Album *album, QString source, QString type, QUrl url);
     void parseAndAssignMusicbrainzInfos(QString xml, Album *album, QList<int> infos);

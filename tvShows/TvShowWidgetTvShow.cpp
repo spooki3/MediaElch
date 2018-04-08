@@ -613,8 +613,9 @@ void TvShowWidgetTvShow::onLoadDone(TvShow *show, QMap<int, QList<Poster>> poste
     if (show->infosToLoad().contains(TvShowScraperInfos::Actors) && Settings::instance()->downloadActorImages()) {
         QList<Actor *> actors = show->actorsPointer();
         for (const auto &actor : actors) {
-            if (actor->thumb.isEmpty())
+            if (actor->thumb.isEmpty()) {
                 continue;
+            }
             DownloadManagerElement d;
             d.imageType = ImageType::Actor;
             d.url = QUrl(actor->thumb);

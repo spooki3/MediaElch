@@ -47,6 +47,7 @@ MusicSearchWidget::MusicSearchWidget(QWidget *parent) : QWidget(parent), ui(new 
     ui->chkLogo->setMyData(MusicScraperInfos::Logo);
     ui->chkCover->setMyData(MusicScraperInfos::Cover);
     ui->chkCdArt->setMyData(MusicScraperInfos::CdArt);
+    ui->chkBackCover->setMyData(MusicScraperInfos::BackCover);
     ui->chkDiscography->setMyData(MusicScraperInfos::Discography);
 
     foreach (MyCheckBox *box, ui->groupBox->findChildren<MyCheckBox *>()) {

@@ -886,6 +886,8 @@ void ImageDialog::loadImagesFromProvider(QString id)
             m_currentProvider->albumCdArts(id);
         else if (m_type == ImageType::AlbumThumb)
             m_currentProvider->albumThumbs(id);
+        else if (m_type == ImageType::AlbumBackCover)
+            m_currentProvider->albumBackCovers(id);
         else if (m_type == ImageType::AlbumBooklet)
             m_currentProvider->albumBooklets(id);
     }

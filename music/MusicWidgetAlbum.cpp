@@ -34,9 +34,11 @@ MusicWidgetAlbum::MusicWidgetAlbum(QWidget *parent) : QWidget(parent), ui(new Ui
 #endif
     ui->labelCover->setFont(font);
     ui->labelDiscArt->setFont(font);
+    ui->labelBackCover->setFont(font);
 
     ui->cover->setDefaultPixmap(QPixmap(":/img/placeholders/poster.png"));
     ui->discArt->setDefaultPixmap(QPixmap(":/img/placeholders/cd_art.png"));
+    ui->backCover->setDefaultPixmap(QPixmap(":/img/placeholders/cd_art.png")); // TODO
 
     ui->genreCloud->setText(tr("Genres"));
     ui->genreCloud->setPlaceholder(tr("Add Genre"));
@@ -55,6 +57,7 @@ MusicWidgetAlbum::MusicWidgetAlbum(QWidget *parent) : QWidget(parent), ui(new Ui
 
     ui->cover->setImageType(ImageType::AlbumThumb);
     ui->discArt->setImageType(ImageType::AlbumCdArt);
+    ui->backCover->setImageType(ImageType::AlbumBackCover);
     foreach (ClosableImage *image, ui->groupBox_3->findChildren<ClosableImage *>()) {
         connect(image, &ClosableImage::clicked, this, &MusicWidgetAlbum::onChooseImage);
         connect(image, &ClosableImage::sigClose, this, &MusicWidgetAlbum::onDeleteImage);
@@ -173,9 +176,11 @@ void MusicWidgetAlbum::onClear()
     ui->moodCloud->clear();
     ui->cover->clear();
     ui->discArt->clear();
+    ui->backCover->clear();
 
-    if (m_bookletWidget)
+    if (m_bookletWidget) {
         m_bookletWidget->setAlbum(nullptr);
+    }
 
     ui->buttonRevert->setVisible(false);
 }
@@ -234,8 +239,9 @@ void MusicWidgetAlbum::onStartScraperSearch()
 void MusicWidgetAlbum::updateAlbumInfo()
 {
     onClear();
-    if (!m_album)
+    if (!m_album) {
         return;
+    }
 
     ui->albumName->setText(m_album->title());
     setContent(ui->path, m_album->path());
@@ -258,6 +264,7 @@ void MusicWidgetAlbum::updateAlbumInfo()
 
     updateImage(ImageType::AlbumCdArt, ui->discArt);
     updateImage(ImageType::AlbumThumb, ui->cover);
+    updateImage(ImageType::AlbumBackCover, ui->backCover);
 
     QStringList genres;
     QStringList styles;
@@ -290,10 +297,12 @@ void MusicWidgetAlbum::updateImage(int imageType, ClosableImage *image)
 {
     if (!m_album->rawImage(imageType).isNull()) {
         image->setImage(m_album->rawImage(imageType));
+
     } else if (!m_album->imagesToRemove().contains(imageType)) {
         QString imgFileName = Manager::instance()->mediaCenterInterface()->imageFileName(m_album, imageType);
-        if (!imgFileName.isEmpty())
+        if (!imgFileName.isEmpty()) {
             image->setImage(imgFileName);
+        }
     }
 }
 
@@ -325,32 +334,36 @@ void MusicWidgetAlbum::onItemChanged(QString text)
 
 void MusicWidgetAlbum::onReviewChanged()
 {
-    if (!m_album)
+    if (!m_album) {
         return;
+    }
     m_album->setReview(ui->review->toPlainText());
     ui->buttonRevert->setVisible(true);
 }
 
 void MusicWidgetAlbum::onYearChanged(int value)
 {
-    if (!m_album)
+    if (!m_album) {
         return;
+    }
     m_album->setYear(value);
     ui->buttonRevert->setVisible(true);
 }
 
 void MusicWidgetAlbum::onRatingChanged(double value)
 {
-    if (!m_album)
+    if (!m_album) {
         return;
+    }
     m_album->setRating(value);
     ui->buttonRevert->setVisible(true);
 }
 
 void MusicWidgetAlbum::onRevertChanges()
 {
-    if (!m_album)
+    if (!m_album) {
         return;
+    }
 
     m_album->clearImages();
     m_album->bookletModel()->clear();
@@ -360,16 +373,18 @@ void MusicWidgetAlbum::onRevertChanges()
 
 void MusicWidgetAlbum::onAddCloudItem(QString text)
 {
-    if (!m_album)
+    if (!m_album) {
         return;
+    }
 
     QString property = sender()->property("item").toString();
-    if (property == "genre")
+    if (property == "genre") {
         m_album->addGenre(text);
-    else if (property == "style")
+    } else if (property == "style") {
         m_album->addStyle(text);
-    else if (property == "mood")
+    } else if (property == "mood") {
         m_album->addMood(text);
+    }
 
     ui->buttonRevert->setVisible(true);
 }
@@ -380,33 +395,37 @@ void MusicWidgetAlbum::onRemoveCloudItem(QString text)
         return;
 
     QString property = sender()->property("item").toString();
-    if (property == "genre")
+    if (property == "genre") {
         m_album->removeGenre(text);
-    else if (property == "style")
+    } else if (property == "style") {
         m_album->removeStyle(text);
-    else if (property == "mood")
+    } else if (property == "mood") {
         m_album->removeMood(text);
+    }
 
     ui->buttonRevert->setVisible(true);
 }
 
 void MusicWidgetAlbum::onChooseImage()
 {
-    if (m_album == nullptr)
+    if (m_album == nullptr) {
         return;
+    }
 
     auto image = static_cast<ClosableImage *>(QObject::sender());
-    if (!image)
+    if (!image) {
         return;
+    }
 
     ImageDialog::instance()->setImageType(image->imageType());
     ImageDialog::instance()->clear();
     ImageDialog::instance()->setAlbum(m_album);
 
-    if (!m_album->images(image->imageType()).isEmpty())
+    if (!m_album->images(image->imageType()).isEmpty()) {
         ImageDialog::instance()->setDownloads(m_album->images(image->imageType()));
-    else
+    } else {
         ImageDialog::instance()->setDownloads(QList<Poster>());
+    }
 
     ImageDialog::instance()->exec(image->imageType());
 
@@ -419,12 +438,14 @@ void MusicWidgetAlbum::onChooseImage()
 
 void MusicWidgetAlbum::onDeleteImage()
 {
-    if (m_album == nullptr)
+    if (m_album == nullptr) {
         return;
+    }
 
     auto image = static_cast<ClosableImage *>(QObject::sender());
-    if (!image)
+    if (!image) {
         return;
+    }
 
     m_album->removeImage(image->imageType());
     updateImage(image->imageType(), image);
@@ -433,8 +454,9 @@ void MusicWidgetAlbum::onDeleteImage()
 
 void MusicWidgetAlbum::onImageDropped(int imageType, QUrl imageUrl)
 {
-    if (!m_album)
+    if (!m_album) {
         return;
+    }
     emit sigSetActionSaveEnabled(false, MainWidgets::Music);
     m_album->controller()->loadImage(imageType, imageUrl);
     ui->buttonRevert->setVisible(true);
@@ -442,8 +464,9 @@ void MusicWidgetAlbum::onImageDropped(int imageType, QUrl imageUrl)
 
 void MusicWidgetAlbum::onInfoLoadDone(Album *album)
 {
-    if (m_album != album)
+    if (m_album != album) {
         return;
+    }
 
     updateAlbumInfo();
     ui->buttonRevert->setVisible(true);
@@ -454,11 +477,13 @@ void MusicWidgetAlbum::onLoadDone(Album *album)
 {
     emit sigDownloadsFinished(Constants::MusicAlbumProgressMessageId + album->databaseId());
 
-    if (m_album != album)
+    if (m_album != album) {
         return;
+    }
 
-    if (m_bookletWidget)
+    if (m_bookletWidget) {
         m_bookletWidget->setLoading(false);
+    }
     onSetEnabled(true);
 }
 
@@ -469,8 +494,9 @@ void MusicWidgetAlbum::onDownloadProgress(Album *album, int current, int maximum
 
 void MusicWidgetAlbum::onLoadingImages(Album *album, QList<int> imageTypes)
 {
-    if (m_album != album)
+    if (m_album != album) {
         return;
+    }
 
     foreach (const int &imageType, imageTypes) {
         foreach (ClosableImage *cImage, ui->groupBox_3->findChildren<ClosableImage *>()) {
@@ -479,8 +505,9 @@ void MusicWidgetAlbum::onLoadingImages(Album *album, QList<int> imageTypes)
         }
     }
 
-    if (m_bookletWidget && imageTypes.contains(ImageType::AlbumBooklet))
+    if (m_bookletWidget && imageTypes.contains(ImageType::AlbumBooklet)) {
         m_bookletWidget->setLoading(true);
+    }
 
     ui->groupBox_3->update();
 }
@@ -492,8 +519,9 @@ void MusicWidgetAlbum::onLoadImagesStarted(Album *album)
 
 void MusicWidgetAlbum::onSetImage(Album *album, int type, QByteArray data)
 {
-    if (m_album != album)
+    if (m_album != album) {
         return;
+    }
 
     foreach (ClosableImage *image, ui->groupBox_3->findChildren<ClosableImage *>()) {
         if (image->imageType() == type) {
@@ -506,10 +534,12 @@ void MusicWidgetAlbum::onSetImage(Album *album, int type, QByteArray data)
 void MusicWidgetAlbum::onBookletModelChanged()
 {
     auto model = static_cast<ImageModel *>(sender());
-    if (!model)
+    if (!model) {
         return;
-    if (m_album != static_cast<Album *>(model->parent()))
+    }
+    if (m_album != static_cast<Album *>(model->parent())) {
         return;
+    }
     if (model->hasChanged()) {
         ui->buttonRevert->setVisible(true);
         m_album->setHasChanged(true);
@@ -518,8 +548,9 @@ void MusicWidgetAlbum::onBookletModelChanged()
 
 void MusicWidgetAlbum::onAddBooklet()
 {
-    if (!m_album)
+    if (!m_album) {
         return;
+    }
 
     ImageDialog::instance()->setImageType(ImageType::AlbumBooklet);
     ImageDialog::instance()->clear();
@@ -529,8 +560,9 @@ void MusicWidgetAlbum::onAddBooklet()
     ImageDialog::instance()->exec(ImageType::AlbumBooklet);
 
     if (ImageDialog::instance()->result() == QDialog::Accepted && !ImageDialog::instance()->imageUrls().isEmpty()) {
-        if (m_bookletWidget)
+        if (m_bookletWidget) {
             m_bookletWidget->setLoading(true);
+        }
         emit sigSetActionSaveEnabled(false, MainWidgets::Music);
         m_album->controller()->loadImages(ImageType::AlbumBooklet, ImageDialog::instance()->imageUrls());
         ui->buttonRevert->setVisible(true);
@@ -539,7 +571,8 @@ void MusicWidgetAlbum::onAddBooklet()
 
 void MusicWidgetAlbum::onBookletsDropped(QList<QUrl> urls)
 {
-    if (m_bookletWidget)
+    if (m_bookletWidget) {
         m_bookletWidget->setLoading(true);
+    }
     m_album->controller()->loadImages(ImageType::AlbumBooklet, urls);
 }

@@ -15,8 +15,12 @@
 FanartTvMusic::FanartTvMusic(QObject *parent)
 {
     setParent(parent);
-    m_provides << ImageType::AlbumCdArt << ImageType::AlbumThumb << ImageType::ArtistFanart << ImageType::ArtistLogo
-               << ImageType::ArtistThumb << ImageType::ArtistExtraFanart;
+    m_provides << ImageType::AlbumCdArt   //
+               << ImageType::AlbumThumb   //
+               << ImageType::ArtistFanart //
+               << ImageType::ArtistLogo   //
+               << ImageType::ArtistThumb  //
+               << ImageType::ArtistExtraFanart;
     m_apiKey = "842f7a5d1cc7396f142b8dd47c4ba42b";
     m_searchResultLimit = 0;
     m_language = "en";
@@ -132,6 +136,11 @@ void FanartTvMusic::albumThumbs(QString mbId)
     QNetworkReply *reply = qnam()->get(request);
     reply->setProperty("infoToLoad", ImageType::AlbumThumb);
     connect(reply, &QNetworkReply::finished, this, &FanartTvMusic::onLoadAlbumFinished);
+}
+
+void FanartTvMusic::albumBackCovers(QString mbId)
+{
+    Q_UNUSED(mbId);
 }
 
 void FanartTvMusic::onSearchArtistFinished()

@@ -558,6 +558,72 @@
             </widget>
            </item>
            <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>10</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelBackCover">
+             <property name="text">
+              <string>Back Cover</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ClosableImage" name="backCover">
+             <property name="minimumSize">
+              <size>
+               <width>180</width>
+               <height>180</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>180</width>
+               <height>180</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="toolTip">
+              <string>Click to Change</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="../MediaElch.qrc">:/img/placeholders/cd_art.png</pixmap>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="clickable" stdset="0">
+              <bool>true</bool>
+             </property>
+             <property name="myFixedHeight" stdset="0">
+              <number>180</number>
+             </property>
+             <property name="title" stdset="0">
+              <string>Back Cover</string>
+             </property>
+             <property name="dropShadow" stdset="0">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>

@@ -26,13 +26,12 @@ AlbumController::AlbumController(Album *parent) :
         Qt::UniqueConnection);
 }
 
-AlbumController::~AlbumController() = default;
-
 bool AlbumController::loadData(MediaCenterInterface *mediaCenterInterface, bool force, bool reloadFromNfo)
 {
     if ((m_infoLoaded || m_album->hasChanged()) && !force
-        && (m_infoFromNfoLoaded || (m_album->hasChanged() && !m_infoFromNfoLoaded)))
+        && (m_infoFromNfoLoaded || (m_album->hasChanged() && !m_infoFromNfoLoaded))) {
         return m_infoLoaded;
+    }
 
     m_album->blockSignals(true);
 
@@ -162,6 +161,10 @@ void AlbumController::scraperLoadDone(MusicScraperInterface *scraper)
     if (m_infosToLoad.contains(MusicScraperInfos::Cover)) {
         images << ImageType::AlbumThumb;
         m_album->clear(QList<int>() << MusicScraperInfos::Cover);
+    }
+    if (m_infosToLoad.contains(MusicScraperInfos::BackCover)) {
+        images << ImageType::AlbumBackCover;
+        m_album->clear(QList<int>() << MusicScraperInfos::BackCover);
     }
     if (m_infosToLoad.contains(MusicScraperInfos::CdArt)) {
         images << ImageType::AlbumCdArt;

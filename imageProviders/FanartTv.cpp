@@ -847,6 +847,11 @@ void FanartTv::albumThumbs(QString mbId)
     Q_UNUSED(mbId);
 }
 
+void FanartTv::albumBackCovers(QString mbId)
+{
+    Q_UNUSED(mbId);
+}
+
 void FanartTv::artistImages(Artist *artist, QString mbId, QList<int> types)
 {
     Q_UNUSED(artist);

@@ -454,6 +454,11 @@ void TheTvDbImages::albumThumbs(QString mbId)
     Q_UNUSED(mbId);
 }
 
+void TheTvDbImages::albumBackCovers(QString mbId)
+{
+    Q_UNUSED(mbId);
+}
+
 void TheTvDbImages::artistImages(Artist *artist, QString mbId, QList<int> types)
 {
     Q_UNUSED(artist);

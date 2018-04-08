@@ -35,10 +35,11 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
     } else if (role == MusicRoles::IsNew) {
         return item->data(role);
     } else if (role == Qt::ForegroundRole) {
-        if (item->data(MusicRoles::HasChanged).toBool())
+        if (item->data(MusicRoles::HasChanged).toBool()) {
             return QColor(255, 0, 0);
-        else
+        } else {
             return QColor(17, 51, 80);
+        }
     } else if (role == Qt::FontRole) {
         QFont font;
         if (item->data(MusicRoles::HasChanged).toBool())
@@ -58,8 +59,9 @@ QVariant MusicModel::data(const QModelIndex &index, int role) const
         return QSize(0, (item->data(MusicRoles::Type) == TypeArtist) ? 44 : 22);
 #endif
     } else if (role == MusicRoles::NumOfAlbums) {
-        if (item->data(MusicRoles::Type) == TypeArtist)
+        if (item->data(MusicRoles::Type) == TypeArtist) {
             return item->data(MusicRoles::NumOfAlbums);
+        }
     } else if (role == MusicRoles::SelectionForeground) {
         return QColor(255, 255, 255);
     } else if (role == Qt::DecorationRole) {
@@ -76,23 +78,26 @@ MusicModelItem *MusicModel::getItem(const QModelIndex &index) const
 {
     if (index.isValid()) {
         auto item = static_cast<MusicModelItem *>(index.internalPointer());
-        if (item)
+        if (item) {
             return item;
+        }
     }
     return m_rootItem;
 }
 
 QModelIndex MusicModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (parent.isValid() && parent.column() != 0)
+    if (parent.isValid() && parent.column() != 0) {
         return QModelIndex();
+    }
 
     MusicModelItem *parentItem = getItem(parent);
     MusicModelItem *childItem = parentItem->child(row);
-    if (childItem)
+    if (childItem) {
         return createIndex(row, column, childItem);
-    else
+    } else {
         return QModelIndex();
+    }
 }
 
 MusicModelItem *MusicModel::appendChild(Artist *artist)
@@ -110,14 +115,16 @@ MusicModelItem *MusicModel::appendChild(Artist *artist)
 
 QModelIndex MusicModel::parent(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return QModelIndex();
+    }
 
     MusicModelItem *childItem = getItem(index);
     MusicModelItem *parentItem = childItem->parent();
 
-    if (parentItem == m_rootItem)
+    if (parentItem == m_rootItem) {
         return QModelIndex();
+    }
 
     return createIndex(parentItem->childNumber(), 0, parentItem);
 }
