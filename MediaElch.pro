@@ -224,13 +224,15 @@ SOURCES += main.cpp\
     data/Subtitle.cpp \
     image/ImageCapture.cpp \
     movies/MovieDuplicates.cpp \
-    movies/MovieDuplicateItem.cpp
+    movies/MovieDuplicateItem.cpp \
+    main/AboutDialogDetails.cpp
 
 macx {
     OBJECTIVE_SOURCES += notifications/MacNotificationHandler.mm
 }
 
-HEADERS  += main/MainWindow.h \
+HEADERS  += Version.h \
+    main/MainWindow.h \
     movies/Movie.h \
     globals/Globals.h \
     data/MediaCenterInterface.h \
@@ -399,7 +401,8 @@ HEADERS  += main/MainWindow.h \
     data/Subtitle.h \
     image/ImageCapture.h \
     movies/MovieDuplicates.h \
-    movies/MovieDuplicateItem.h
+    movies/MovieDuplicateItem.h \
+    main/AboutDialogDetails.h
 
 FORMS    += main/MainWindow.ui \
     movies/MovieSearch.ui \
@@ -461,7 +464,8 @@ FORMS    += main/MainWindow.ui \
     image/ImageWidget.ui \
     tvShows/TvShowMultiScrapeDialog.ui \
     movies/MovieDuplicates.ui \
-    movies/MovieDuplicateItem.ui
+    movies/MovieDuplicateItem.ui \
+    main/AboutDialogDetails.ui
 
 RESOURCES += \
     MediaElch.qrc \

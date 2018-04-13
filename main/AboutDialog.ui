@@ -29,23 +29,47 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,1">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0">
    <item>
-    <widget class="QLabel" name="labelMediaElch">
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>MediaElch</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="hLayout_title" stretch="0,0,0">
+     <item>
+      <widget class="QLabel" name="labelMediaElch">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>MediaElch</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_8">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAboutDetails">
+       <property name="text">
+        <string>Details</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1">
+    <layout class="QHBoxLayout" name="hLayout_infobox" stretch="0,0,1">
      <item>
       <widget class="QLabel" name="icon">
        <property name="minimumSize">
@@ -85,7 +109,7 @@
       </spacer>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="vLayout_infos">
        <item>
         <spacer name="verticalSpacer_3">
          <property name="orientation">
@@ -434,8 +458,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>257</x>
+     <y>346</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>

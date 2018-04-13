@@ -4,6 +4,7 @@
 #include "globals/Globals.h"
 #include "globals/Helper.h"
 #include "globals/Manager.h"
+#include "main/AboutDialogDetails.h"
 
 /**
  * @brief AboutDialog::AboutDialog
@@ -25,6 +26,10 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AboutDia
         ui->icon->size() * Helper::instance()->devicePixelRatio(this), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     Helper::instance()->setDevicePixelRatio(p, Helper::instance()->devicePixelRatio(this));
     ui->icon->setPixmap(p);
+
+    m_aboutDetails = new AboutDialogDetails(this);
+
+    connect(ui->btnAboutDetails, &QPushButton::clicked, m_aboutDetails, &AboutDialogDetails::exec);
 }
 
 /**
@@ -44,12 +49,14 @@ int AboutDialog::exec()
     adjustSize();
 
     int episodes = 0;
-    foreach (TvShow *show, Manager::instance()->tvShowModel()->tvShows())
+    foreach (TvShow *show, Manager::instance()->tvShowModel()->tvShows()) {
         episodes += show->episodes().count();
+    }
 
     int albums = 0;
-    foreach (Artist *artist, Manager::instance()->musicModel()->artists())
+    foreach (Artist *artist, Manager::instance()->musicModel()->artists()) {
         albums += artist->albums().count();
+    }
 
     ui->numMovies->setText(QString::number(Manager::instance()->movieModel()->movies().count()));
     ui->numConcerts->setText(QString::number(Manager::instance()->concertModel()->concerts().count()));

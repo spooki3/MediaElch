@@ -3,9 +3,12 @@
 
 #include <QDialog>
 
+#include "AboutDialogDetails.h"
+
 namespace Ui {
 class AboutDialog;
-}
+} // namespace Ui
+class AboutDialogDetails;
 
 /**
  * @brief The AboutDialog class
@@ -23,6 +26,7 @@ public slots:
 
 private:
     Ui::AboutDialog *ui;
+    AboutDialogDetails *m_aboutDetails;
 };
 
 #endif // ABOUTDIALOG_H
