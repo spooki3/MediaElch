@@ -12,7 +12,7 @@
  */
 DownloadManager::DownloadManager(QObject *parent) : QObject(parent), m_downloading{false}
 {
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(downloadTimeout()));
+    connect(&m_timer, &QTimer::timeout, this, &DownloadManager::downloadTimeout);
 }
 
 /**
@@ -34,7 +34,7 @@ void DownloadManager::addDownload(DownloadManagerElement elem)
 {
     qDebug() << "Entered, url=" << elem.url;
     if (m_queue.isEmpty())
-        QTimer::singleShot(0, this, SLOT(startNextDownload()));
+        QTimer::singleShot(0, this, &DownloadManager::startNextDownload);
     m_mutex.lock();
     m_queue.enqueue(elem);
     m_mutex.unlock();
@@ -237,19 +237,20 @@ void DownloadManager::downloadFinished()
     m_retries = 0;
     QByteArray data;
     if (m_currentReply->error() != QNetworkReply::NoError) {
-        qWarning() << "Network Error" << m_currentReply->errorString();
+        qWarning() << "Network Error:" << m_currentReply->errorString() << "|" << m_currentReply->url();
     } else {
         data = m_currentReply->readAll();
     }
     m_currentDownloadElement.data = data;
     reply->deleteLater();
-    if (m_currentDownloadElement.imageType == ImageType::Actor && !m_currentDownloadElement.movie)
+    if (m_currentDownloadElement.imageType == ImageType::Actor && !m_currentDownloadElement.movie) {
         m_currentDownloadElement.actor->image = data;
-    else if (m_currentDownloadElement.imageType == ImageType::TvShowEpisodeThumb
-             && !m_currentDownloadElement.directDownload)
+    } else if (m_currentDownloadElement.imageType == ImageType::TvShowEpisodeThumb
+               && !m_currentDownloadElement.directDownload) {
         m_currentDownloadElement.episode->setThumbnailImage(data);
-    else
+    } else {
         emit downloadFinished(m_currentDownloadElement);
+    }
     emit sigElemDownloaded(m_currentDownloadElement);
     startNextDownload();
 }
