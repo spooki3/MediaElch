@@ -1338,7 +1338,7 @@ void Movie::setDiscType(DiscType type)
     m_discType = type;
 }
 
-DiscType Movie::discType()
+DiscType Movie::discType() const
 {
     return m_discType;
 }
@@ -1369,7 +1369,7 @@ void Movie::removeImage(int type)
     setChanged(true);
 }
 
-QByteArray Movie::image(int imageType)
+QByteArray Movie::image(int imageType) const
 {
     return m_images.value(imageType, QByteArray());
 }
@@ -1379,7 +1379,7 @@ bool Movie::imageHasChanged(int imageType)
     return m_hasImageChanged.value(imageType, false);
 }
 
-bool Movie::hasImage(int imageType)
+bool Movie::hasImage(int imageType) const
 {
     return m_hasImage.value(imageType, false);
 }
@@ -1451,7 +1451,7 @@ void Movie::setLabel(int label)
     m_label = label;
 }
 
-int Movie::label()
+int Movie::label() const
 {
     return m_label;
 }
