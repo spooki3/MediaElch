@@ -48,7 +48,6 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 
 void installLogger()
 {
-    Settings::instance(QCoreApplication::instance())->loadSettings();
     if (Settings::instance()->advanced()->debugLog() && !Settings::instance()->advanced()->logFile().isEmpty()) {
         data.setFileName(Settings::instance()->advanced()->logFile());
         if (!data.open(QFile::WriteOnly | QFile::Truncate)) {
@@ -70,6 +69,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion("2.4.3-dev");
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
+    Settings::instance(QCoreApplication::instance())->loadSettings();
     installLogger();
 
     // Qt localization
@@ -88,6 +88,14 @@ int main(int argc, char *argv[])
         editTranslator.load(Settings::instance()->advanced()->locale(), "MediaElch", "_", ":/i18n/", ".qm");
     }
     app.installTranslator(&editTranslator);
+
+    // Load and apply an application style
+    qDebug() << "Loading application style...";
+    QFile styleFile(":/ui/default.css");
+    styleFile.open(QFile::ReadOnly);
+    QString style(styleFile.readAll());
+    app.setStyleSheet(style);
+    styleFile.close();
 
     MainWindow window;
     window.show();
