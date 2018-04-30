@@ -79,11 +79,22 @@ make -j4
 ```
 
 ## Mac
-Install XCode (e.g. through the [Mac App Store](https://itunes.apple.com/de/app/xcode/id497799835)) and [Homebrew](https://brew.sh/).
+
+# Dependencies
+Install XCode (e.g. through the [Mac App Store](https://itunes.apple.com/de/app/xcode/id497799835))
+Alternatively only install the XCode Command Line Tools through Terminal (`xcode-select --install`)
+
+media-info (needed for streamdetails) e.g. Install through [Homebrew](https://brew.sh/)
+
+### Commandline build
+Install [Homebrew](https://brew.sh/).
 
 ```sh
 # Install tools and dependencies
-brew install git subversion qt5 media-info
+brew install subversion qt5 media-info
+
+# Optional : git is already included with XCode
+brew install git
 
 # Clone MediaElch
 git clone https://github.com/Komet/MediaElch.git && cd MediaElch
@@ -97,6 +108,30 @@ mkdir build && cd $_
 qmake ..
 make -j4
 ```
+### QTCreator build
+Install the latest version of Qt [qt]: https://www.qt.io/download.
+
+Install Qt with at least the following options : 
+- macOS
+- Scripts (Deprecated
+- QT Creator
+
+# Clone MediaElch
+git clone https://github.com/Komet/MediaElch
+
+# Download necessary headers
+git clone https://github.com/MediaArea/MediaInfoLib
+Copy the entire Source/MediaInfoDLL/ dir (not just its contents) into the MediaElch source dir.
+git clone https://github.com/MediaArea/ZenLib
+Copy the entire Source/ZenLib/ dir (not just its contents) into the MediaElch source dir.
+
+# Build
+Open the MediaElch project using QtCreator, configure it and click "Run" (`Strg+R`).
+
+- Assuming QT Creator is installer run it ( /home/you/QT<version>/QT Creator.app )
+- Open Project and bowse to and open MediaElch/MediaElch.pro
+- Configure build configuration as release
+- Build project " MediaElch" (`Cmd+R`)
 
 ## Windows
 
