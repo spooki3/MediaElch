@@ -1,7 +1,22 @@
 #!/usr/bin/env sh
 
-# Binary dir for compilers, etc
-BIN_DIR=$(dirname $(which g++))
+###########################################################
+# Important paths
+export BIN_DIR=$(dirname $(which g++))
+export SCRIPT_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+export PROJECT_DIR="${SCRIPT_DIR}/.."
+
+###########################################################
+# OS infos
+export OS_NAME=`uname -s`
+export OS_REV=`uname -r`
+export OS_MACH=`uname -m`
+
+if [ "${OS_NAME}" = "Linux" ]; then
+	export JOBS=$(grep '^processor' /proc/cpuinfo | wc -l)
+else
+	export JOBS=2
+fi
 
 ###########################################################
 # Print colors
@@ -45,4 +60,11 @@ fold_end() {
 	fi
 	echo -e "travis_fold:end:$TRAVIS_LAST_FOLD"
 	TRAVIS_LAST_FOLD=""
+}
+
+###########################################################
+# Other useful functions
+
+lc(){
+	echo "$1" | tr '[:upper:]' '[:lower:]'
 }
